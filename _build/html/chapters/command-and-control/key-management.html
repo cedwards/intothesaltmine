@@ -1,0 +1,301 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Key Management &mdash; Into The Salt Mine</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+        <link rel="copyright" title="Copyright" href="../../copyright.html"/>
+    <link rel="top" title="Into The Salt Mine" href="../../index.html"/>
+        <link rel="up" title="Command &amp; Control" href="index.html"/>
+        <link rel="next" title="Targeting" href="targeting.html"/>
+        <link rel="prev" title="ZeroMQ" href="zeromq.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../index.html" class="fa fa-home"> Into The Salt Mine</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.html">Preface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../preface/who-should-read-this-book.html">Who Should Read This Book</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../preface/why-i-wrote-this-book.html">Why I Wrote This Book</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../preface/navigating-this-book.html">Navigating This Book</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../preface/online-resources.html">Online Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../preface/conventions-used-in-this-book.html">Conventions Used In This Book</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../preface/using-code-examples.html">Using Code Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../preface/how-to-contact-me.html">How To Contact Me</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../preface/acknowledgments.html">Acknowledgments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../preface/introduction.html">Introduction</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Chapters</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Command &amp; Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../events-and-reactions/index.html">Events &amp; Reactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../job-management/index.html">Job Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../web-interface-and-API/index.html">Web Interface &amp; API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../scheduling-tasks/index.html">Scheduling Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../provisioning/index.html">Provisioning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../salt-at-scale/index.html">Salt at Scale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development/index.html">Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration-options/index.html">Configuration Options</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../about-the-author.html">About The Author</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../copyright.html">Copyright</a></li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">Into The Salt Mine</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Chapters</a> &raquo;</li>
+      
+          <li><a href="index.html">Command &amp; Control</a> &raquo;</li>
+      
+    <li>Key Management</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="key-management">
+<h1>Key Management<a class="headerlink" href="#key-management" title="Permalink to this headline">¶</a></h1>
+<p>Before we can begin any communication on top of our ZeroMQ network we need to
+accept encryption keys. The underlying ZeroMQ network is not encrypted, but
+SaltStack adds a layer of AES public key encryption to all communications. This
+adds very little overhead while ensuring that all communications are securely
+encrypted between all hosts. Before these encryption keys are accepted on the
+master, no communication will take place.</p>
+<p>The Salt Master provides a utility called <tt class="docutils literal"><span class="pre">salt-key</span></tt> to allow you to manage
+these encryption keys. Each minion will automatically generate their respective
+keys and submit them to the master for acceptance. There are a number of ways
+to manage keys at scale, but here we&#8217;ll just look at the basic options of the
+<tt class="docutils literal"><span class="pre">salt-key</span></tt> utility.</p>
+<p><tt class="docutils literal"><span class="pre">salt-key</span></tt> executes simple management of Salt public keys used for
+authentication and encryption.</p>
+<div class="section" id="listing-keys">
+<h2>Listing keys<a class="headerlink" href="#listing-keys" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash"><div class="highlight"><pre>-l ARG, --list<span class="o">=</span>ARG
+</pre></div>
+</div>
+<p>The args <tt class="docutils literal"><span class="pre">pre</span></tt>, <tt class="docutils literal"><span class="pre">un</span></tt>, and <tt class="docutils literal"><span class="pre">unaccepted</span></tt> will list unaccepted/unsigned
+keys.  The args <tt class="docutils literal"><span class="pre">acc</span></tt> or <tt class="docutils literal"><span class="pre">accepted</span></tt> will list accepted/signed keys.  The
+args <tt class="docutils literal"><span class="pre">rej</span></tt> or <tt class="docutils literal"><span class="pre">rejected</span></tt> will list rejected keys.  Finally, <tt class="docutils literal"><span class="pre">all</span></tt> will
+list all keys.</p>
+<div class="highlight-bash"><div class="highlight"><pre>-L, --list-all
+</pre></div>
+</div>
+<p>List all public keys. (DEPRECATED: use <tt class="docutils literal"><span class="pre">--list-all</span></tt>)</p>
+</div>
+<div class="section" id="accepting-keys">
+<h2>Accepting keys<a class="headerlink" href="#accepting-keys" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash"><div class="highlight"><pre>-a key_name, --accept<span class="o">=</span>key_name
+</pre></div>
+</div>
+<p>Accept the specified public key(s). Globs are supported.</p>
+<div class="highlight-bash"><div class="highlight"><pre>-A, --accept-all
+</pre></div>
+</div>
+<p>Accept all pending keys.</p>
+<div class="highlight-bash"><div class="highlight"><pre>--include-all
+</pre></div>
+</div>
+<p>Include non-pending keys when accepting or rejecting keys.</p>
+</div>
+<div class="section" id="rejecting-keys">
+<h2>Rejecting keys<a class="headerlink" href="#rejecting-keys" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash"><div class="highlight"><pre>-r key_name, --reject<span class="o">=</span>key_name
+</pre></div>
+</div>
+<p>Reject the specified public key. Globs are supported.</p>
+<div class="highlight-bash"><div class="highlight"><pre>-R, --reject-all
+</pre></div>
+</div>
+<p>Reject all pending keys.</p>
+<div class="highlight-bash"><div class="highlight"><pre>--include-all
+</pre></div>
+</div>
+<p>Include non-pending keys when accepting or rejecting keys.</p>
+</div>
+<div class="section" id="printing-keys">
+<h2>Printing keys<a class="headerlink" href="#printing-keys" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash"><div class="highlight"><pre>-p key_name, --print<span class="o">=</span>key_name
+</pre></div>
+</div>
+<p>Print the specified public key.</p>
+<div class="highlight-bash"><div class="highlight"><pre>-P, --print-all
+</pre></div>
+</div>
+<p>Print all public keys.</p>
+</div>
+<div class="section" id="deleting-keys">
+<h2>Deleting keys<a class="headerlink" href="#deleting-keys" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash"><div class="highlight"><pre>-d key_name, --delete<span class="o">=</span>key_name
+</pre></div>
+</div>
+<p>Delete the specified key(s). Globs are supported.</p>
+<div class="highlight-bash"><div class="highlight"><pre>-D, --delete-all
+</pre></div>
+</div>
+<p>Delete ALL keys.</p>
+</div>
+<div class="section" id="key-fingerprints">
+<h2>Key fingerprints<a class="headerlink" href="#key-fingerprints" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash"><div class="highlight"><pre>-f key_name, --finger<span class="o">=</span>key_name
+</pre></div>
+</div>
+<p>Print the specified key fingerprint.</p>
+<div class="highlight-bash"><div class="highlight"><pre>-F, --finger-all
+</pre></div>
+</div>
+<p>Print all keys fingerprints.</p>
+</div>
+<div class="section" id="key-generation">
+<h2>Key Generation<a class="headerlink" href="#key-generation" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash"><div class="highlight"><pre>--gen-keys<span class="o">=</span>key_name
+</pre></div>
+</div>
+<p>Generate a keypair for use with Salt.</p>
+<div class="highlight-bash"><div class="highlight"><pre>--gen-keys-dir<span class="o">=</span>/path/
+</pre></div>
+</div>
+<p>Define the path to save the generated keypair. Only works with the
+<tt class="docutils literal"><span class="pre">--gen-keys</span></tt> option; default is the current directory.</p>
+<div class="highlight-bash"><div class="highlight"><pre>--keysize<span class="o">=</span>key_size
+</pre></div>
+</div>
+<p>Set the keysize for the generated key. Only works with the <tt class="docutils literal"><span class="pre">--gen-keys</span></tt>
+option. Keysize must be 2048 or higher; the default is 2048.</p>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="targeting.html" class="btn btn-neutral float-right" title="Targeting"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="zeromq.html" class="btn btn-neutral" title="ZeroMQ"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; <a href="../../copyright.html">Copyright</a> 2014, Christer Edwards.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'2014.12.11',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

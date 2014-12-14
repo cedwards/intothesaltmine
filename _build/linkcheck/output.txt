@@ -1,0 +1,2 @@
+preface/online-resources.rst:27: [broken] http://intothesaltmine.org: HTTP Error 404: Not Found
+preface/online-resources.rst:10: [redirected with Found] https://docs.saltstack.com to http://docs.saltstack.com/en/latest/
