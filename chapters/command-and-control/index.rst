@@ -5,9 +5,9 @@ Command & Control
 
     zeromq
     key-management
-    targeting
     grains
     pillar
+    targeting
     remote-execution
     modules
     returners
