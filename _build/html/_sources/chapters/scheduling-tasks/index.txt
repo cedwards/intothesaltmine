@@ -1,6 +1,0 @@
-Scheduling Tasks
-================
-
-.. toctree::
-
-    scheduler
