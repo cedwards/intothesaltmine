@@ -3,6 +3,7 @@ Chapters
 
 .. toctree::
 
+    installation/index.rst
     command-and-control/index.rst
     events-and-reactions/index.rst
     job-management/index.rst
