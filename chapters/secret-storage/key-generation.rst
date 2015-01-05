@@ -48,7 +48,7 @@ using a simple shell one-liner:
 
 .. code-block:: bash
 
-    echo -n "secret" | gpg --homedir /etc/salt/gpgkeys --armor --encrypt -r email@address.org
+    echo -n "top secret data" | gpg --homedir /etc/salt/gpgkeys --armor --encrypt -r email@address.org
 
 The resulting output of this can then be used within the SaltStack pillar
 system in the following format:
@@ -69,20 +69,5 @@ system in the following format:
       skqmFTbOiA==
       =Eqsm
       -----END PGP MESSAGE-----
-
-    token: |
-      -----BEGIN PGP MESSAGE-----
-      Version: GnuPG v1
       
-      hQEMAwCZgGoLMuOCAQgAhWfgG9jMeo0lWsnmG8G9b3YxYPUpCxul+cdxqImlS7Zr
-      mGSiTFol/3HeEDETyxUMfGxR2i8d4Er2rqeKhAk4g1G0D3G3Y/tumOQmpr+T99TS
-      C0rKEpnvdpRwdc2m0/vjYoSctOQeGu3j4/TQm9mLiewcgHtlvSKYzFhzWXFkuwjG
-      RDJ/Zb8+SZj5A34+IJCzukgbNN5Bna8cqvqlpO0LukqFrSU5Q45Y8c+mdEEnh17O
-      bx7wTTQ+4Beocc4c/PqXBDx/T+Mfn0LT2jD+OJQX/9LvHvQx9dIBj3DpA7/745hx
-      hf0V1x9wf2NLOVFhc7z8yZbmXD4sFOSVP2uHVXjWmdJBAX/SaAmNao94PqvR+abc
-      mSlumqT28QInw8YajP2ivV4E5BrLKeFg1OSN86dX+zEHyJ3iJBskCZ8ibjJTPcnp
-      cqY=
-      =cZrD
-      -----END PGP MESSAGE-----
-
     ...
