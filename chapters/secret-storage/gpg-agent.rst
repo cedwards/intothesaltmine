@@ -1,3 +1,35 @@
+It is important to note that the gpg-agent has a default cache ttl value. If
+the key is not unlocked or requested within that cache time the passphrase will
+be forgotten and you'll need to request it again.
+
+I have solved this by increasing the default max-cache-ttl value to one day as
+well as configured a salt scheduler to request a "cache" token from the secret
+store on a regular interval. On each successful request the max-cache-ttl is
+reset and the countdown starts over. The combination of a one-time unlocking
+and regular queries for an encrypted value will allow the cache to remain
+effective until the system or the services is restarted.
+
+Currently the components are:
+
+ - gnupg-python package installed per minion
+ - gpg renderer configured ``(jinja | yaml | gpg)``
+ - gpg.conf updated to 'use-agent'
+ - gpg-agent.conf updated to specify pinentry-program
+ - gpg-agent.conf updated to specify extended cache-ttl
+
+I admit this seems like a good deal to be setup initially, but the beatuy is
+that we're working with a configuration management system, so all that needs to
+happen is importing the existing formula and applying it to your Salt master.
+This will allow you to keep up to date with the latest configuration options,
+and allow for quick one-time application of all configs. Remember, Salt is here
+to solve your problems, not cause more. We've got you covered.
+
+https://github.com/cedwards/gpg-renderer.git
+
+This also has required a very small patch to the gpg.py renderer. I need to do
+some additional testing to see if my changes can be merged upstream and apply
+cleanly with or without a GPG passphrase. This is yet to be determined.
+
 The GPG Agent
 =============
 
@@ -11,6 +43,15 @@ This step of the process requires an update to a configuration file as well as
 manually unlocking the GPG key. I will again mention that this process is
 currently manual and will need to be repeated anytime the system is restarted
 and the GPG agent restarted.
+
+There are a few settings that need to be defined in order for this to work
+properly. The next two sections tell the system that you want to use an agent,
+and how that agent should be used to prompt you for a passphrase.
+
+gpg.conf
+--------
+
+You need to tell the gpg utility that it should use the agent.
 
 gpg-agent.conf
 --------------
@@ -26,77 +67,16 @@ the + character itself.
 .. code-block:: diff
 
     + pinentry-program /usr/bin/pinentry-curses
+    + default-cache-ttl 86400 # one day
+    + max-cache-ttl 31536000  # one year
 
 gpg-agent
 ---------
 
-In order for this component to work you'll need to manually launch a GPG agent
-and tell Salt where it can be found. (Note: I'm still working on automating
-this piece, but until then it'll require just a touch of copy-paste).
-
-A ``gpg-agent`` is a tool that creates a socket that the ``gpg`` tool can
-connect to for authentication. This socket is usually created within ``/tmp/``
-under the name ``/tmp/gpg-xxxxxx``, where x is a random string of alpha-numeric
-characters. It isn't important to know a lot about how a ``gpg-agent`` works,
-but it will be important to know *where* your agent socket is created. This
-information can be gathered in two ways:
-
- # start the gpg-agent daemon and query for the environment values
- # start the gpg-agent daemon and manually enter the resulting values
-
-I'll outline both methods here for clarity. Only one of these processes needs
-to be followed.
-
-eval
-----
-
-The ``eval`` command is a shell built-in that will evaluate environment
-variables as they are passed from other programs. In this case it will evaluate
-the output of the embedded command (surrounded by parenthesis). The
-``gpg-agent`` command outputs an environment variable to be exported, and the
-``eval`` shell built-in evaluates it. If you start your ``gpg-agent`` this way
-you'll need to manually query for the environment values in order to provide
-them to Salt. The environment variable is ``GPG_AGENT_INFO``.
-
-.. code-block:: bash
-
-    eval $(gpg-agent --homedir /etc/salt/gpgkeys --daemon)
-    echo $GPG_AGENT_INFO
-    export GPG_TTY=$(tty)
-
-You'll need to then copy/paste the output and provide it to SaltStack. This
-value, and the path it defines, is the location of the gpg-agent and is
-critical towards allowing Salt to unlock the private key.
-
-manual
-------
-
-If you don't use the ``eval`` method you can manually run the ``gpg-agent``
-command and copy/paste the values where needed. Either method will work just as
-well, it's simply a matter of preference. I consider this method slightly more
-manual as it requires an extra step.
-
-.. code-block:: bash
-
-    gpg-agent --homedir /etc/salt/gpgkeys --daemon
-    GPG_AGENT_INFO=/tmp/gpg-o6aR6w/S.gpg-agent:72087:1; export GPG_AGENT_INFO;
-    export GPG_TTY=$(tty)
-
-When you run the above command you'll get output similar to what you see above.
-The path to the created socket, the process ID and the agent version. It is
-this same information that needs to be provided to SaltStack in order to enable
-access to the unlocked key.
 
 /etc/default/salt
 -----------------
 
-In order for SaltStack to be aware of the environment variables defined by the
-gpg-agent is to have them included when the Salt service is started. This can
-be done by adding these variables to a file that is automatically included each
-time the service is started using the standard init script. Simply copy/paste
-the ``GPG_AGENT_INFO`` line into this file and restart the Salt master. This
-will make the master aware of these environment variables and allow it to
-access the agent and reuse the agent once it has been unlocked.
 
 unlock the key
 --------------
