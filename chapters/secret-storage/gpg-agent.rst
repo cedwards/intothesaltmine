@@ -48,10 +48,19 @@ There are a few settings that need to be defined in order for this to work
 properly. The next two sections tell the system that you want to use an agent,
 and how that agent should be used to prompt you for a passphrase.
 
+
 gpg.conf
 --------
 
-You need to tell the gpg utility that it should use the agent.
+You need to tell the gpg utility that it should use the agent. This is done by
+updating the ``gpg.conf`` file, which you'll likely need to create inside the
+``/etc/salt/gpgkeys`` directory. This will tell any instance of ``gpg``
+specifying this path as a ``--homedir`` that it should use a gpg-agent.
+
+.. code-block:: diff
+
+    + use-agent
+
 
 gpg-agent.conf
 --------------
@@ -70,12 +79,12 @@ the + character itself.
     + default-cache-ttl 86400 # one day
     + max-cache-ttl 31536000  # one year
 
+
 gpg-agent
 ---------
 
-
-/etc/default/salt
------------------
+You'll need to manually launch the gpg-agent and then tell SaltStack where it
+can find the running agent. This 
 
 
 unlock the key

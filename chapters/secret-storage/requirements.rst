@@ -1,53 +1,52 @@
 Requirements
 ============
 
-Let me start off by listing some of the requirements that were outlined by some
-of our admin and engineering teams in this solution. I like to think that S4
-covers all of the bases here, and handles them efficiently.
+The set of requirements defined for this project are outlined below. These
+requirements span a miriad of topics ranging from encryption to scalability.
 
- - password storage
- - ssh-key storage
- - token storage
- - user/host based access control
- - efficiency / caching
+Encryption
+----------
 
-We basically needed something that would not only securely store user
-credentials, but a solution that could pass off credentials to applications
-that needed access to other applications. For example, a web server needing
-access to a database, without the need to hardcode passwords in applications or
-config files. The idea being when the application needs a password it can query
-the secret storage for it, cache it, and use it as needed until expiration.
+ - Secrets not stored in plain text on disk (client or server)
+ - Secrets always encrypted in transit across network
 
-I was working from home one day when I had the thought that I could start
-creating something like this. I remember sitting in my la-z-boy thinking about
-how we could solve the issue of hard-coding passwords in config files. This got
-me thinking about how Salt can securely store data in its pillar
-infrastructure. The idea of pillar in combination with the GPG renderer came
-together in my mind and BAM I was on to something! I immediately started on a
-proof of concept.
+Reliability
+-----------
 
-The proof would be a user needing access to a mysql server with the following
-requirements:
+ - Fault tolerant enough to have the server go down and the application keeps functioning
+ - Server uptime equivalent to the most critical server or component in the data center
 
- - The user doesn't know the mysql password
- - The user is trusted to connect to the mysql server
- - The host is trusted to connect to the mysql server
- - The password is never stored in plain text
+Scalability
+-----------
 
-In its current state, S4, solves all of these problems and meets all of the
-requirements. With only a dozen or so lines of code I was able to write a
-script that would take a secret or token as an argument and query S4 for the
-contents. Assuming the user had access to the script (root or sudo privileges),
-and the machine was within the appropriate group(s) to query for those secrets,
-the token would be fetched, decrypted and passed through to mysql.
+ - Can support 30,000 concurrent servers
+ - Can support access of over 300,000 secrets
 
-The user never learns the passphrase, it is never stored in plain text, and
-access is limited per user per machine. This amount of granularity would prove
-to be important, but as you can see, this was all built using out of the box
-open source solutions.
+Secret types
+------------
+
+ - Support standard secret types (ssh, key pairs, db, ldap, etc)
+ - Custom secrets with custom key/value meta data
+ - Support for automated changing of passwords on schedules and on demand
+
+Administration
+--------------
+
+ - Searching across all fields
+ - APIs for administration of secrets from the command line
+ - Bulk edit of secrets
+ - SDKs for integrating with code and cli
+ - CLI utility
+
+Access Control
+--------------
+
+ - Secrets can be permissioned to individual servers
+ - Read, write, and delete as separate permissions
+ - Group permissioning for both secrets and applications/clients
 
 Required Packages
------------------
+=================
 
 In order to build this secret storage solution you'll need:
 

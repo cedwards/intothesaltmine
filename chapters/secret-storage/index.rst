@@ -5,5 +5,6 @@ Secret Storage
 
    introduction
    requirements
+   architecture
    key-generation
    gpg-agent
