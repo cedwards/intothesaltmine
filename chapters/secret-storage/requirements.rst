@@ -19,13 +19,13 @@ Reliability
 Scalability
 -----------
 
- - Can support 30,000 concurrent servers
- - Can support access of over 300,000 secrets
+ - Can support thousands of concurrent servers
+ - Can support storage of thousands of secrets
 
 Secret types
 ------------
 
- - Support standard secret types (ssh, key pairs, db, ldap, etc)
+ - Support standard secret types (ssh, key pairs, hash, etc)
  - Custom secrets with custom key/value meta data
  - Support for automated changing of passwords on schedules and on demand
 
