@@ -69,5 +69,8 @@ system in the following format:
       skqmFTbOiA==
       =Eqsm
       -----END PGP MESSAGE-----
-      
-    ...
+
+.. note::
+
+    Please note the pipe character ("|") after the key name as well as the
+    yaml-style indentation for the entire GPG cipher value.

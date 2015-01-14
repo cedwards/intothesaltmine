@@ -8,3 +8,4 @@ Secret Storage
    architecture
    key-generation
    gpg-agent
+   conclusion

@@ -1,8 +1,7 @@
 Requirements
 ============
 
-The set of requirements defined for this project are outlined below. These
-requirements span a miriad of topics ranging from encryption to scalability.
+The set of requirements defined for this project are outlined below.
 
 Encryption
 ----------
@@ -25,7 +24,7 @@ Scalability
 Secret types
 ------------
 
- - Support standard secret types (ssh, key pairs, hash, etc)
+ - Support standard secret types (PKI key pairs, hashes, etc)
  - Custom secrets with custom key/value meta data
  - Support for automated changing of passwords on schedules and on demand
 
@@ -46,25 +45,25 @@ Access Control
  - Group permissioning for both secrets and applications/clients
 
 Required Packages
-=================
+-----------------
 
 In order to build this secret storage solution you'll need:
 
  - Salt Master
  - Salt Minion(s)
- - ``python-gnupg`` installed
+ - ``python-gnupg`` python library installed on minion(s)
  - Public and private GPG keys
- - GPG Agent
+ - GPG Agent (optional)
 
-For a really high level overview here's how each of these components fit
-together.
+Required Configuration
+----------------------
 
-The Salt Master will be the central storage server. All secrets will be stored
-within the pillar data on the master (usually ``/srv/pillar/``). Each secret is
-stored on the master in a GPG encrypted cipher. The public and private GPG keys
-are only ever stored on the master. GPG keys never need to be shared to
-minions. The ``python-gnupg`` package needs to be installed on any minion
-wanting to request secure keys. Lastly, assuming you'll want to secure your
-encrypted secrets with a GPG key passphrase, you'll need a configured GPG agent
-to unlock these secrets upon request, without the requirement of entering a
-passphrase each time.
+In order for Salt master to parse the GPG cipher data it needs the GPG
+renderer enabled. This is done by updating the ``/etc/salt/master`` config file
+and applying the below change.
+
+.. code-block:: diff
+
+    - #renderer: yaml_jinja
+    + renderer: jinja | yaml | gpg
+

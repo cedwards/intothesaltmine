@@ -1,34 +1,13 @@
-It is important to note that the gpg-agent has a default cache ttl value. If
-the key is not unlocked or requested within that cache time the passphrase will
-be forgotten and you'll need to request it again.
+GPG Agent Requirements
+======================
 
-I have solved this by increasing the default max-cache-ttl value to one day as
-well as configured a salt scheduler to request a "cache" token from the secret
-store on a regular interval. On each successful request the max-cache-ttl is
-reset and the countdown starts over. The combination of a one-time unlocking
-and regular queries for an encrypted value will allow the cache to remain
-effective until the system or the services is restarted.
+This section outlines the requirements for the ``gpg.conf`` and
+``gpg-agent.conf``.
 
-Currently the components are:
-
- - gnupg-python package installed per minion
- - gpg renderer configured ``(jinja | yaml | gpg)``
- - gpg.conf updated to 'use-agent'
+ - gpg.conf updated to use-agent
  - gpg-agent.conf updated to specify pinentry-program
  - gpg-agent.conf updated to specify extended cache-ttl
 
-I admit this seems like a good deal to be setup initially, but the beatuy is
-that we're working with a configuration management system, so all that needs to
-happen is importing the existing formula and applying it to your Salt master.
-This will allow you to keep up to date with the latest configuration options,
-and allow for quick one-time application of all configs. Remember, Salt is here
-to solve your problems, not cause more. We've got you covered.
-
-https://github.com/cedwards/gpg-renderer.git
-
-This also has required a very small patch to the gpg.py renderer. I need to do
-some additional testing to see if my changes can be merged upstream and apply
-cleanly with or without a GPG passphrase. This is yet to be determined.
 
 The GPG Agent
 =============
@@ -47,6 +26,18 @@ and the GPG agent restarted.
 There are a few settings that need to be defined in order for this to work
 properly. The next two sections tell the system that you want to use an agent,
 and how that agent should be used to prompt you for a passphrase.
+
+
+It is important to note that the gpg-agent has a default cache ttl value. If
+the key is not unlocked or requested within that cache time the passphrase will
+be forgotten and you'll need to request it again.
+
+I have solved this by increasing the default max-cache-ttl value to one day as
+well as configured a salt scheduler to request a "cache" token from the secret
+store on a regular interval. On each successful request the max-cache-ttl is
+reset and the countdown starts over. The combination of a one-time unlocking
+and regular queries for an encrypted value will allow the cache to remain
+effective until the system or the services is restarted.
 
 
 gpg.conf
@@ -108,3 +99,6 @@ determine that no access has been granted and prompt you for a passphrase. You
 should see a curses-based prompt appear in your terminal asking you for the
 encryption password. Enter this password once and your key will be unlocked.
 This should last for the duration of your session or your GPG max-cache-ttl.
+
+.. image:: ../../images/pinentry.png
+   :align: center
