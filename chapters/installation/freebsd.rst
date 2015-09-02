@@ -36,7 +36,7 @@ config file in place, you'll likely want to copy the sample config into use.
 
 Copy the sample config file:
 
-.. code-block:: bash
+.. code-block:: shell
 
     cp /usr/local/etc/salt/master.sample /usr/local/etc/salt/master
 
@@ -44,9 +44,9 @@ Copy the sample config file:
 
 Activate the Salt master in ``/etc/rc.conf``:
 
-.. code-block:: diff
+.. code-block:: shell
 
-    + salt_master_enable="YES"
+    sysrc salt_master_enable="YES"
 
 **Start the Master**
 
@@ -60,7 +60,7 @@ Start the Salt master:
 
 Copy the sample config file:
 
-.. code-block:: bash
+.. code-block:: shell
 
     cp /usr/local/etc/salt/minion.sample /usr/local/etc/salt/minion
 
@@ -68,9 +68,9 @@ Copy the sample config file:
 
 Activate the Salt minion in ``/etc/rc.conf``:
 
-.. code-block:: diff
+.. code-block:: shell
 
-    + salt_minion_enable="YES"
+    sysrc salt_minion_enable="YES"
 
 **Start the Minion**
 
