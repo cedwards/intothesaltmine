@@ -51,7 +51,6 @@ In order to build this secret storage solution you'll need:
 
  - Salt Master
  - Salt Minion(s)
- - ``python-gnupg`` python library installed on minion(s)
  - Public and private GPG keys
  - GPG Agent (optional)
 
