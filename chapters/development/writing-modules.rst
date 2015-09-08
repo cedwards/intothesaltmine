@@ -21,7 +21,7 @@ example, and then explain each section.
 
 .. code-block:: python
 
-    # -*- coding: utf-8 -*-*
+    # -*- coding: utf-8 -*-
     '''
     :maintainer: Christer Edwards (christer.edwards@gmail.com)
     :maturity: 20150907
@@ -132,6 +132,17 @@ your module should load on the given platform. You have full access to Salt
 components, including `grains`, `pillar`, testing on the availability of
 other Salt execution modules, and more.
 
+Functions
+=========
+
+A Salt execution module generally consists of "private" and "public" functions.
+These functions are either callable from within the module itself (private), or
+callable directly through Salt (public). The way Salt treats functions within
+these custom modules very much follows the Pythonic way of handling modules
+and methods.
+
+In this section I provide examples of both types of functions:
+
 "private"
 ---------
 
@@ -141,27 +152,38 @@ other Salt execution modules, and more.
         '''
         "Private" function; only callable within this module
         '''
-        ret = some_processed_data
-
+        ret = {}
         return ret
 
+A "private" function works the same way that any other function does. The only
+difference here is that the function name is preceded with an underscore (`_`).
+Any function defined with a preceding underscore character will only be
+available within the module, and will not be directly callable through Salt.
 
 "public"
 --------
 
 .. code-block:: python
 
-    def public():
+    def public(*args, **kwargs):
         '''
         "Public" function; available to Salt, ie; module.public
         '''
+        ret = _private()
+        return ret
+
+"public" functions within an execution module are mapped and made available to
+the Salt administrators. Any "public" function becomes available to be called
+from Salt, prefixed by the module name. For example, if our custom module was
+called "custom", and our function name was "test", we'd call this through Salt
+by targeting `custom.test`.
 
 Full Example
 ------------
 
 .. code-block:: python
 
-    # -*- coding: utf-8 -*-*
+    # -*- coding: utf-8 -*-
     '''
     :maintainer: Christer Edwards (christer.edwards@gmail.com)
     :maturity: 20150907
@@ -174,22 +196,21 @@ Full Example
 
     LOG = logging.getLogger(__name__)
 
-    __virtualname__ = 'custom_module'
+    __virtualname__ = 'module_name'
 
 
     def __virtual__():
         '''
         Determine whether or not to load this module
         '''
-        if salt['grains.get']('os:Linux'):
-            return __virtualname__
+        return __virtualname__
 
 
     def _private():
         '''
         "Private" function; only callable within this module
         '''
-        ret = some_processed_data()
+        ret = {}
         return ret
 
 
