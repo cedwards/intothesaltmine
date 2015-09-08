@@ -9,25 +9,28 @@ creating custom execution modules.
 Anatomy of a Salt module
 ------------------------
 
-When developing custom Salt excution modules there are a few basic rules that
+When developing custom Salt execution modules there are a few basic rules that
 need to be followed. This chapter aims to outline the basic structure of a
 module, its key components and general best practices. Let's dive right in.
 
 header
 ------
 
-To begin I'll outline the first five lines of a Salt module. I'll provide an
+To begin I'll outline the first lines of a Salt module. I'll provide an
 example, and then explain each section.
 
 .. code-block:: python
 
     # -*- coding: utf-8 -*-*
     '''
-    My custom Salt module
+    :maintainer: Christer Edwards (christer.edwards@gmail.com)
+    :maturity: 20150907
+    :requires: none
+    :platform: all
     '''
 
 If you've written Python scripts in the past you might wonder where the
-"shebang" is; the '#!/usr/bin/env python` declaration. In the case of a Salt
+"shebang" is; the `#!/usr/bin/env python` declaration. In the case of a Salt
 module (or technically a Python module) this is not required as it is not
 called directly from the shell. Because this file will be imported by the Salt
 loader, as long as it parses properly, it will become available without a
@@ -85,15 +88,49 @@ GLOBALS
 
     LOG = logging.getLogger(__name__)
 
+The above `GLOBAL` definition activates the logger and makes it available
+throughout your module. In order to leverage the logging `GLOBAL` variable
+use the following syntax:
+
+**LOG Example**:
+
+.. code-block:: python
+
+    LOG.info('info output')
+    LOG.debug('debug output')
+    LOG.error('error output')
+    LOG.warning('warning output')
+    LOG.critical('critical output')
+
+__virtualname__
+---------------
+
+.. code-block:: python
+
+    __virtualname__ = 'custom_module'
+
+The `__virtualname__` variable definition defines a custom name for your module.
+If this definition is missing it will default to the name of the module file
+itself (minus the `.py`). While not required, this variable definition is
+common to most modules, and often simply matches the Python module name itself.
 
 __virtual__()
 -------------
-    
+
+.. code-block:: python
+
     def __virtual__():
         '''
         Determine whether or not to load this module
         '''
-        return True
+        if salt['grains.get']('os:Linux'):
+            return __virtualname__
+
+The `__virtual__()` function is a critical component of any Salt execution
+module. This function allows you to enter logic to determine whether or not
+your module should load on the given platform. You have full access to Salt
+components, including `grains`, `pillar`, testing on the availability of
+other Salt execution modules, and more.
 
 "private"
 ---------
@@ -115,3 +152,47 @@ __virtual__()
         '''
         "Public" function; available to Salt, ie; module.public
         '''
+
+Full Example
+------------
+
+.. code-block:: python
+
+    # -*- coding: utf-8 -*-*
+    '''
+    :maintainer: Christer Edwards (christer.edwards@gmail.com)
+    :maturity: 20150907
+    :requires: none
+    :platform: all
+    '''
+    from __future__ import absolute_import
+
+    import logging
+
+    LOG = logging.getLogger(__name__)
+
+    __virtualname__ = 'custom_module'
+
+
+    def __virtual__():
+        '''
+        Determine whether or not to load this module
+        '''
+        if salt['grains.get']('os:Linux'):
+            return __virtualname__
+
+
+    def _private():
+        '''
+        "Private" function; only callable within this module
+        '''
+        ret = some_processed_data()
+        return ret
+
+
+    def public(*args, **kwargs):
+        '''
+        "Public" function; available to Salt, ie; module.public
+        '''
+        ret = _private()
+        return ret
