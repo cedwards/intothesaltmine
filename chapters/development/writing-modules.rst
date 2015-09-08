@@ -135,6 +135,7 @@ other Salt execution modules, and more.
 "private"
 ---------
 
+.. code-block:: python
 
     def _private():
         '''
@@ -147,6 +148,8 @@ other Salt execution modules, and more.
 
 "public"
 --------
+
+.. code-block:: python
 
     def public():
         '''
