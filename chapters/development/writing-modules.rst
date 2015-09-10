@@ -270,8 +270,8 @@ flag is set to `True`. This means that any shell-specific functionality such as
 
 .. note::
 
-    The use of python_shell=True means that the shell will accept _any_ input
+    The use of `python_shell=True` means that the shell will accept *_any_* input
     including potentially malicious commands such as 'good_command; rm -rf /'. Be
     absolutely certain that you have sanitized your input prior to using
-    python_shell=True
+    `python_shell=True`
 
