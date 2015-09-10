@@ -244,3 +244,31 @@ Full Example
 
 Running Commands & Executing Modules
 ====================================
+
+Often times a custom execution module is simply a wrapper around a command line
+utility. This means that "under the hood" Salt is simply executing an existing
+command with certain options. When you realize how this works your first
+thought in regards to development might be "Perfect. So I'll use `subprocess`
+and call the binary..." While that may be the right approach in other cases,
+Salt makes this simpler. Salt makes all other loaded modules available to your
+custom module. This means you can call any other available Salt module through
+your Salt module, including `cmd` to run arbitrary commands. Please do not
+use `subprocess` in your custom module unless you have a very good reason to do
+so. Use the existing `cmd` module to execute arbitrary commands. An example
+might be as follows:
+
+.. code-block:: python
+
+    cmd = '{0} {1} {2}'.format('egrep', string, filename)
+    ret = salt['cmd.run'](cmd)
+
+
+This function does not process commands through a shell unless the `python_shell`
+flag is set to `True`. This means that any shell-specific functionality such as
+'echo' or the use of pipes, redirection or &&, should either be migrated to
+`cmd.shell` or have the `python_shell=True` flag set here.
+
+**The use of python_shell=True means that the shell will accept _any_ input
+including potentially malicious commands such as 'good_command;rm -rf /'. Be
+absolutely certain that you have sanitized your input prior to using
+python_shell=True**
