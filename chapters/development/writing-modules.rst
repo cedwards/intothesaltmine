@@ -268,7 +268,10 @@ flag is set to `True`. This means that any shell-specific functionality such as
 'echo' or the use of pipes, redirection or &&, should either be migrated to
 `cmd.shell` or have the `python_shell=True` flag set here.
 
-**The use of python_shell=True means that the shell will accept _any_ input
-including potentially malicious commands such as 'good_command;rm -rf /'. Be
-absolutely certain that you have sanitized your input prior to using
-python_shell=True**
+.. note:: Security Notice
+
+    The use of python_shell=True means that the shell will accept _any_ input
+    including potentially malicious commands such as 'good_command; rm -rf /'. Be
+    absolutely certain that you have sanitized your input prior to using
+    python_shell=True
+
