@@ -21,7 +21,7 @@ header
     # -*- coding: utf-8 -*-
     '''
     :maintainer: Christer Edwards (christer.edwards@gmail.com)
-    :maturity: 20150907
+    :maturity: 20150910
     :requires: none
     :platform: all
     '''
