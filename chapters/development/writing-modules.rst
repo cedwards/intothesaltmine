@@ -2,7 +2,7 @@ Writing Modules
 ===============
 
 While not always required, sometimes it is necessary to write and distribute
-custom Salt modules for added functionality or integration with internal
+custom Salt modules for added functionality or integration with other
 products. This chapter will outline the basic structure and best practices for
 creating custom execution modules.
 
@@ -15,9 +15,6 @@ module, its key components and general best practices. Let's dive right in.
 
 header
 ------
-
-To begin I'll outline the first lines of a Salt module. I'll provide an
-example, and then explain each section.
 
 .. code-block:: python
 
@@ -88,8 +85,8 @@ GLOBALS
 
     LOG = logging.getLogger(__name__)
 
-The above `GLOBAL` definition activates the logger and makes it available
-throughout your module. In order to leverage the logging `GLOBAL` variable
+The above `GLOBAL` activates the logger and makes it available
+throughout your module. In order to leverage the logging `GLOBAL`
 use the following syntax:
 
 **LOG Example**:
@@ -113,6 +110,13 @@ The `__virtualname__` variable definition defines a custom name for your module.
 If this definition is missing it will default to the name of the module file
 itself (minus the `.py`). While not required, this variable definition is
 common to most modules, and often simply matches the Python module name itself.
+
+This definition also allows the module layer to be abstracted, and is what allows
+a standard command across multiple platforms. For example, the `pkg` module supports
+a wide range of binary package providers. From `yum` to `apt-get` and everywhere
+in-between. Each of these defines `__virtualname__` as `pkg`, meaning based on the
+conditional statements within the `__virtual__` function only the appropriate `pkg` 
+provider is loaded.
 
 __virtual__()
 -------------
@@ -152,12 +156,14 @@ In this section I provide examples of both types of functions:
         '''
         "Private" function; only callable within this module
         '''
+        LOG.debug('Executing the _private function')
+        
         ret = {}
         return ret
 
 A "private" function works the same way that any other function does. The only
 difference here is that the function name is preceded with an underscore (`_`).
-Any function defined with a preceding underscore character will only be
+Any function prefixed with an underscore character will only be
 available within the module, and will not be directly callable through Salt.
 
 "public"
@@ -168,15 +174,21 @@ available within the module, and will not be directly callable through Salt.
     def public(*args, **kwargs):
         '''
         "Public" function; available to Salt, ie; module.public
+        
+        CLI Example:
+        
+            salt '*' module.public
         '''
+        LOG.debug('Executing the public function')
+        
         ret = _private()
         return ret
 
 "public" functions within an execution module are mapped and made available to
 the Salt administrators. Any "public" function becomes available to be called
 from Salt, prefixed by the module name. For example, if our custom module was
-called "custom", and our function name was "test", we'd call this through Salt
-by targeting `custom.test`.
+called "module", and our function name was "public", we'd call this through Salt
+by targeting `module.public`.
 
 Full Example
 ------------
@@ -186,7 +198,7 @@ Full Example
     # -*- coding: utf-8 -*-
     '''
     :maintainer: Christer Edwards (christer.edwards@gmail.com)
-    :maturity: 20150907
+    :maturity: 20150910
     :requires: none
     :platform: all
     '''
@@ -203,13 +215,16 @@ Full Example
         '''
         Determine whether or not to load this module
         '''
-        return __virtualname__
+        if salt['grains.get']('os:Linux'):
+            return __virtualname__
 
 
     def _private():
         '''
         "Private" function; only callable within this module
         '''
+        LOG.debug('Executing the _private function')
+        
         ret = {}
         return ret
 
@@ -217,6 +232,15 @@ Full Example
     def public(*args, **kwargs):
         '''
         "Public" function; available to Salt, ie; module.public
+        
+        CLI Example:
+        
+            salt '*' module.public
         '''
+        LOG.debug('Executing the public function')
+        
         ret = _private()
         return ret
+
+Running Commands & Executing Modules
+====================================
