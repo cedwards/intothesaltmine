@@ -127,7 +127,7 @@ __virtual__()
         '''
         Determine whether or not to load this module
         '''
-        if __salt__['grains.get']('os:Linux'):
+        if __salt__['grains.get']('kernel:Linux'):
             return __virtualname__
 
 The `__virtual__()` function is a critical component of any Salt execution
@@ -215,7 +215,7 @@ Full Example
         '''
         Determine whether or not to load this module
         '''
-        if __salt__['grains.get']('os:Linux'):
+        if __salt__['grains.get']('kernel:Linux'):
             return __virtualname__
 
 
