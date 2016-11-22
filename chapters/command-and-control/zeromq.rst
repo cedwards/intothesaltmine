@@ -97,7 +97,7 @@ two-at-a-time but all-at-a-time with little overhead.
 Just imagine for a second a high-speed network connecting all of your systems.
 A network that is fully encrypted and sits on top of your existing physical
 network infrastructure. This network can easily connect hundreds, thousands and
-even tens of thousands of systems without issue.This network can provide you
+even tens of thousands of systems without issue. This network can provide you
 with a low latency method by which you can query for or send information to
 your entire network of servers.  I really hope you're paying attention here,
 because this is the foundational piece of the entire Salt stack. This is the
@@ -123,4 +123,4 @@ available everywhere. No more iterating through lists and sending commands over
 ssh. No more sitting and waiting for networking protocols that weren't designed
 for the scale of todays internet try and keep up. You will be leveraging a
 modern, encrypted, asynchronous communication network actually designed just
-for this.The Internet is growing. Your company is growing. Grow with it.
+for this. The Internet is growing. Your company is growing. Grow with it.
