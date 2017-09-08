@@ -99,6 +99,3 @@ determine that no access has been granted and prompt you for a passphrase. You
 should see a curses-based prompt appear in your terminal asking you for the
 encryption password. Enter this password once and your key will be unlocked.
 This should last for the duration of your session or your GPG max-cache-ttl.
-
-.. image:: ../../images/pinentry.png
-   :align: center
